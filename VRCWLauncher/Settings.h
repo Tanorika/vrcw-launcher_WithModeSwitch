@@ -8,6 +8,7 @@ namespace Settings
     struct Data
     {
         bool keepLauncherOpen = false;
+        bool pc_Mode = false;
 
         //
         // Language of the interface:
@@ -33,8 +34,7 @@ namespace Settings
 
     Data Load();
 
-    void Save(
-        const Data& data);
+    void Save(const Data& data);
 
     //
     // Moves a file to the front of the recent list,

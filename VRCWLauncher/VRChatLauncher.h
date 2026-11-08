@@ -45,5 +45,7 @@ namespace VRChatLauncher
     //
     LaunchError Launch(
         const std::wstring& vrchatExePath,
-        const std::wstring& vrcwPath);
+        const std::wstring& vrcwPath,
+        const bool& pc_Mode
+    );
 }

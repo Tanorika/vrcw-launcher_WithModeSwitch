@@ -64,13 +64,18 @@ namespace VRChatLauncher
     std::wstring BuildCommandLine(
         const std::wstring& vrchatExePath,
         const std::wstring& vrcwPath,
-        const std::wstring& roomId)
+        const std::wstring& roomId,
+        const bool& pc_Mode
+    )
     {
         std::wstring commandLine =
             Quote(vrchatExePath);
 
         commandLine += L" ";
-
+        if (pc_Mode) {
+            commandLine += L"--no-vr";
+            commandLine += L" ";
+        }
         commandLine += Quote(
             L"--url=" +
             BuildUrl(vrcwPath, roomId));
@@ -83,7 +88,8 @@ namespace VRChatLauncher
 
     LaunchError Launch(
         const std::wstring& vrchatExePath,
-        const std::wstring& vrcwPath)
+        const std::wstring& vrcwPath,
+        const bool& pc_Mode)
     {
         if (vrchatExePath.empty() ||
             !PathUtils::FileExists(vrchatExePath))
@@ -108,7 +114,8 @@ namespace VRChatLauncher
             BuildCommandLine(
                 vrchatExePath,
                 vrcwPath,
-                roomId);
+                roomId,
+                pc_Mode);
 
         //
         // CreateProcessW may modify the command line,

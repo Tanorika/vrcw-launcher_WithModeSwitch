@@ -416,6 +416,7 @@ namespace
     constexpr UINT MENU_CLEAR_RECENT_FILES = 4;
     constexpr UINT MENU_LANGUAGE = 5;
     constexpr UINT MENU_ABOUT = 6;
+    constexpr UINT MENU_PC_MODE = 7;
 
     //
     // Everything the pointer can hover over.
@@ -467,6 +468,7 @@ namespace
         const wchar_t* launch;
         const wchar_t* menuKeepOpen;
         const wchar_t* menuAssociate;
+        const wchar_t* use_pc_mode;
         const wchar_t* menuClearRecent;
         const wchar_t* menuLanguage;
         const wchar_t* folderError;
@@ -496,6 +498,7 @@ namespace
         L"Launch",
         L"Keep Launcher Open",
         L"Associate .vrcw Files",
+        L"Start with Non-VR Mode",
         L"Clear Recent Files",
         L"中文界面 (Chinese)",
         L"VRChat.exe was not found in that folder.",
@@ -525,6 +528,7 @@ namespace
         L"启动",
         L"启动后保留启动器",
         L"关联 .vrcw 文件",
+        L"使用Non-VR启动",
         L"清空最近记录",
         L"中文界面 (Chinese)",
         L"该文件夹里没有找到 VRChat.exe。",
@@ -1600,11 +1604,12 @@ namespace
     bool TryLaunch()
     {
         g_lastLaunchError.clear();
-
         const VRChatLauncher::LaunchError error =
             VRChatLauncher::Launch(
                 g_vrchatExePath,
-                g_selectedVrcwPath);
+                g_selectedVrcwPath,
+                g_settings.pc_Mode
+                );
 
         if (error != VRChatLauncher::LaunchError::None)
         {
@@ -2661,6 +2666,13 @@ namespace
 
         items.push_back(
             PopupMenuItem{
+                MENU_PC_MODE,
+                GetStrings().use_pc_mode,
+                g_settings.pc_Mode
+            });
+
+        items.push_back(
+            PopupMenuItem{
                 0,
                 nullptr,
                 false });
@@ -2725,6 +2737,14 @@ namespace
 
         case MENU_ASSOCIATE_VRCW:
             ToggleFileAssociation(hwnd);
+
+            break;
+
+        case MENU_PC_MODE:
+            g_settings.pc_Mode =
+                !g_settings.pc_Mode;
+            
+            Settings::Save(g_settings);
 
             break;
 

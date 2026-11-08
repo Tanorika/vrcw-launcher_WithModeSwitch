@@ -166,6 +166,13 @@ namespace Settings
                 0,
                 filePath.c_str()) != 0;
 
+        data.pc_Mode =
+            GetPrivateProfileIntW(
+                SECTION_GENERAL,
+                L"pc_Mode",
+                0,
+                filePath.c_str()) != 0;
+
         data.chineseUi =
             GetPrivateProfileIntW(
                 SECTION_GENERAL,
@@ -226,6 +233,14 @@ namespace Settings
             data.keepLauncherOpen
                 ? L"1"
                 : L"0",
+            filePath.c_str());
+
+        WritePrivateProfileStringW(
+            SECTION_GENERAL,
+            L"pc_Mode",
+            data.pc_Mode
+            ? L"1"
+            : L"0",
             filePath.c_str());
 
         //
